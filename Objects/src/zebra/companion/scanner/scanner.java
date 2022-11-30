@@ -14,7 +14,7 @@ public class scanner extends  android.app.Service{
 			android.content.Intent in = new android.content.Intent(context, scanner.class);
 			if (intent != null)
 				in.putExtra("b4a_internal_intent", intent);
-            ServiceHelper.StarterHelper.startServiceFromReceiver (context, in, false, BA.class);
+            ServiceHelper.StarterHelper.startServiceFromReceiver (context, in, false, anywheresoftware.b4a.ShellBA.class);
 		}
 
 	}
@@ -29,7 +29,7 @@ public class scanner extends  android.app.Service{
         super.onCreate();
         mostCurrent = this;
         if (processBA == null) {
-		    processBA = new BA(this, null, null, "zebra.companion.scanner", "zebra.companion.scanner.scanner");
+		    processBA = new anywheresoftware.b4a.ShellBA(this, null, null, "zebra.companion.scanner", "zebra.companion.scanner.scanner");
             if (BA.isShellModeRuntimeCheck(processBA)) {
                 processBA.raiseEvent2(null, true, "SHELL", false);
 		    }
@@ -124,115 +124,155 @@ public class scanner extends  android.app.Service{
 @Override
 	public android.os.IBinder onBind(android.content.Intent intent) {
 		return null;
-	}public anywheresoftware.b4a.keywords.Common __c = null;
-public static com.rootsoft.broadcastreceiver.BroadCastReceiver _v5 = null;
-public static anywheresoftware.b4a.objects.collections.List _v6 = null;
-public static anywheresoftware.b4a.objects.collections.Map _v7 = null;
-public zebra.companion.scanner.main _vv4 = null;
-public zebra.companion.scanner.starter _vv5 = null;
+	}
+public anywheresoftware.b4a.keywords.Common __c = null;
+public static com.rootsoft.broadcastreceiver.BroadCastReceiver _bc = null;
+public static anywheresoftware.b4a.objects.collections.List _structure = null;
+public static anywheresoftware.b4a.objects.collections.Map _data = null;
+public zebra.companion.scanner.main _main = null;
+public zebra.companion.scanner.starter _starter = null;
 public static String  _bc_onreceive(String _action,Object _o) throws Exception{
+RDebugUtils.currentModule="scanner";
+if (Debug.shouldDelegate(processBA, "bc_onreceive", false))
+	 {return ((String) Debug.delegate(processBA, "bc_onreceive", new Object[] {_action,_o}));}
 anywheresoftware.b4a.objects.IntentWrapper _intent = null;
 String _l = "";
 String _strsym = "";
 String _strall = "";
- //BA.debugLineNum = 46;BA.debugLine="Sub BC_OnReceive (action As String, o As Object)";
- //BA.debugLineNum = 48;BA.debugLine="Dim intent As Intent = o";
+RDebugUtils.currentLine=1703936;
+ //BA.debugLineNum = 1703936;BA.debugLine="Sub BC_OnReceive (action As String, o As Object)";
+RDebugUtils.currentLine=1703938;
+ //BA.debugLineNum = 1703938;BA.debugLine="Dim intent As Intent = o";
 _intent = new anywheresoftware.b4a.objects.IntentWrapper();
 _intent = (anywheresoftware.b4a.objects.IntentWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.IntentWrapper(), (android.content.Intent)(_o));
- //BA.debugLineNum = 49;BA.debugLine="data.Initialize()";
-_v7.Initialize();
- //BA.debugLineNum = 50;BA.debugLine="For Each l As String In structure";
+RDebugUtils.currentLine=1703939;
+ //BA.debugLineNum = 1703939;BA.debugLine="data.Initialize()";
+_data.Initialize();
+RDebugUtils.currentLine=1703940;
+ //BA.debugLineNum = 1703940;BA.debugLine="For Each l As String In structure";
 {
-final anywheresoftware.b4a.BA.IterableList group3 = _v6;
+final anywheresoftware.b4a.BA.IterableList group3 = _structure;
 final int groupLen3 = group3.getSize()
 ;int index3 = 0;
 ;
 for (; index3 < groupLen3;index3++){
 _l = BA.ObjectToString(group3.Get(index3));
- //BA.debugLineNum = 51;BA.debugLine="If intent.HasExtra(l) Then";
+RDebugUtils.currentLine=1703941;
+ //BA.debugLineNum = 1703941;BA.debugLine="If intent.HasExtra(l) Then";
 if (_intent.HasExtra(_l)) { 
- //BA.debugLineNum = 52;BA.debugLine="data.Put(l.SubString(l.LastIndexOf(\".\")+1), int";
-_v7.Put((Object)(_l.substring((int) (_l.lastIndexOf(".")+1))),_intent.GetExtra(_l));
+RDebugUtils.currentLine=1703942;
+ //BA.debugLineNum = 1703942;BA.debugLine="data.Put(l.SubString(l.LastIndexOf(\".\")+1), int";
+_data.Put((Object)(_l.substring((int) (_l.lastIndexOf(".")+1))),_intent.GetExtra(_l));
  };
  }
 };
- //BA.debugLineNum = 55;BA.debugLine="Dim strSym As String = data.Get(\"label_type\")";
-_strsym = BA.ObjectToString(_v7.Get((Object)("label_type")));
- //BA.debugLineNum = 56;BA.debugLine="strSym = strSym.ToUpperCase";
+RDebugUtils.currentLine=1703945;
+ //BA.debugLineNum = 1703945;BA.debugLine="Dim strSym As String = data.Get(\"label_type\")";
+_strsym = BA.ObjectToString(_data.Get((Object)("label_type")));
+RDebugUtils.currentLine=1703946;
+ //BA.debugLineNum = 1703946;BA.debugLine="strSym = strSym.ToUpperCase";
 _strsym = _strsym.toUpperCase();
- //BA.debugLineNum = 57;BA.debugLine="strSym = strSym.Replace(\"LABEL-TYPE-\",\"\")";
+RDebugUtils.currentLine=1703947;
+ //BA.debugLineNum = 1703947;BA.debugLine="strSym = strSym.Replace(\"LABEL-TYPE-\",\"\")";
 _strsym = _strsym.replace("LABEL-TYPE-","");
- //BA.debugLineNum = 58;BA.debugLine="DateTime.DateFormat=\"yyyy-MM-dd HH:mm:ss\"";
+RDebugUtils.currentLine=1703948;
+ //BA.debugLineNum = 1703948;BA.debugLine="DateTime.DateFormat=\"yyyy-MM-dd HH:mm:ss\"";
 anywheresoftware.b4a.keywords.Common.DateTime.setDateFormat("yyyy-MM-dd HH:mm:ss");
- //BA.debugLineNum = 59;BA.debugLine="Dim strAll As String = Chr(34) & DateTime.Date(Da";
-_strall = BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+anywheresoftware.b4a.keywords.Common.DateTime.Date(anywheresoftware.b4a.keywords.Common.DateTime.getNow())+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+","+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+_strsym+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+","+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+BA.ObjectToString(_v7.Get((Object)("data_string")))+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)));
- //BA.debugLineNum = 61;BA.debugLine="CallSubDelayed2(Main, \"ProcessScan\", strAll)";
-anywheresoftware.b4a.keywords.Common.CallSubDelayed2(processBA,(Object)(mostCurrent._vv4.getObject()),"ProcessScan",(Object)(_strall));
- //BA.debugLineNum = 62;BA.debugLine="End Sub";
-return "";
-}
-public static String  _process_globals() throws Exception{
- //BA.debugLineNum = 6;BA.debugLine="Sub Process_Globals";
- //BA.debugLineNum = 9;BA.debugLine="Dim BC As BroadCastReceiver";
-_v5 = new com.rootsoft.broadcastreceiver.BroadCastReceiver();
- //BA.debugLineNum = 10;BA.debugLine="Dim structure As List";
-_v6 = new anywheresoftware.b4a.objects.collections.List();
- //BA.debugLineNum = 11;BA.debugLine="Dim data As Map";
-_v7 = new anywheresoftware.b4a.objects.collections.Map();
- //BA.debugLineNum = 12;BA.debugLine="End Sub";
+RDebugUtils.currentLine=1703949;
+ //BA.debugLineNum = 1703949;BA.debugLine="Dim strAll As String = Chr(34) & DateTime.Date(Da";
+_strall = BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+anywheresoftware.b4a.keywords.Common.DateTime.Date(anywheresoftware.b4a.keywords.Common.DateTime.getNow())+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+","+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+_strsym+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+","+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+BA.ObjectToString(_data.Get((Object)("data_string")))+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)));
+RDebugUtils.currentLine=1703951;
+ //BA.debugLineNum = 1703951;BA.debugLine="CallSubDelayed2(Main, \"ProcessScan\", strAll)";
+anywheresoftware.b4a.keywords.Common.CallSubDelayed2(processBA,(Object)(mostCurrent._main.getObject()),"ProcessScan",(Object)(_strall));
+RDebugUtils.currentLine=1703952;
+ //BA.debugLineNum = 1703952;BA.debugLine="End Sub";
 return "";
 }
 public static String  _service_create() throws Exception{
- //BA.debugLineNum = 14;BA.debugLine="Sub Service_Create";
- //BA.debugLineNum = 16;BA.debugLine="BC.Initialize(\"BC\")";
-_v5.Initialize(processBA,"BC");
- //BA.debugLineNum = 17;BA.debugLine="structure.Initialize()";
-_v6.Initialize();
- //BA.debugLineNum = 18;BA.debugLine="structure.Add(\"com.symbol.datawedge.source\")";
-_v6.Add((Object)("com.symbol.datawedge.source"));
- //BA.debugLineNum = 19;BA.debugLine="structure.Add(\"com.symbol.datawedge.data_string\")";
-_v6.Add((Object)("com.symbol.datawedge.data_string"));
- //BA.debugLineNum = 20;BA.debugLine="structure.Add(\"com.symbol.datawedge.label_type\")";
-_v6.Add((Object)("com.symbol.datawedge.label_type"));
- //BA.debugLineNum = 21;BA.debugLine="structure.Add(\"com.symbol.datawedge.decode_data\")";
-_v6.Add((Object)("com.symbol.datawedge.decode_data"));
- //BA.debugLineNum = 22;BA.debugLine="structure.Add(\"com.symbol.datawedge.data_dispatch";
-_v6.Add((Object)("com.symbol.datawedge.data_dispatch_time"));
- //BA.debugLineNum = 23;BA.debugLine="structure.Add(\"com.symbol.datawedge.decoded_mode\"";
-_v6.Add((Object)("com.symbol.datawedge.decoded_mode"));
- //BA.debugLineNum = 24;BA.debugLine="structure.Add(\"com.motorolasolutions.emdk.datawed";
-_v6.Add((Object)("com.motorolasolutions.emdk.datawedge.source"));
- //BA.debugLineNum = 25;BA.debugLine="structure.Add(\"com.motorolasolutions.emdk.datawed";
-_v6.Add((Object)("com.motorolasolutions.emdk.datawedge.data_string"));
- //BA.debugLineNum = 26;BA.debugLine="structure.Add(\"com.motorolasolutions.emdk.datawed";
-_v6.Add((Object)("com.motorolasolutions.emdk.datawedge.label_type"));
- //BA.debugLineNum = 27;BA.debugLine="structure.Add(\"com.motorolasolutions.emdk.datawed";
-_v6.Add((Object)("com.motorolasolutions.emdk.datawedge.decode_data"));
- //BA.debugLineNum = 28;BA.debugLine="structure.Add(\"com.symbol.datawedge.api\")";
-_v6.Add((Object)("com.symbol.datawedge.api"));
- //BA.debugLineNum = 29;BA.debugLine="End Sub";
+RDebugUtils.currentModule="scanner";
+if (Debug.shouldDelegate(processBA, "service_create", false))
+	 {return ((String) Debug.delegate(processBA, "service_create", null));}
+RDebugUtils.currentLine=1507328;
+ //BA.debugLineNum = 1507328;BA.debugLine="Sub Service_Create";
+RDebugUtils.currentLine=1507330;
+ //BA.debugLineNum = 1507330;BA.debugLine="BC.Initialize(\"BC\")";
+_bc.Initialize(processBA,"BC");
+RDebugUtils.currentLine=1507331;
+ //BA.debugLineNum = 1507331;BA.debugLine="structure.Initialize()";
+_structure.Initialize();
+RDebugUtils.currentLine=1507332;
+ //BA.debugLineNum = 1507332;BA.debugLine="structure.Add(\"com.symbol.datawedge.source\")";
+_structure.Add((Object)("com.symbol.datawedge.source"));
+RDebugUtils.currentLine=1507333;
+ //BA.debugLineNum = 1507333;BA.debugLine="structure.Add(\"com.symbol.datawedge.data_string\")";
+_structure.Add((Object)("com.symbol.datawedge.data_string"));
+RDebugUtils.currentLine=1507334;
+ //BA.debugLineNum = 1507334;BA.debugLine="structure.Add(\"com.symbol.datawedge.label_type\")";
+_structure.Add((Object)("com.symbol.datawedge.label_type"));
+RDebugUtils.currentLine=1507335;
+ //BA.debugLineNum = 1507335;BA.debugLine="structure.Add(\"com.symbol.datawedge.decode_data\")";
+_structure.Add((Object)("com.symbol.datawedge.decode_data"));
+RDebugUtils.currentLine=1507336;
+ //BA.debugLineNum = 1507336;BA.debugLine="structure.Add(\"com.symbol.datawedge.data_dispatch";
+_structure.Add((Object)("com.symbol.datawedge.data_dispatch_time"));
+RDebugUtils.currentLine=1507337;
+ //BA.debugLineNum = 1507337;BA.debugLine="structure.Add(\"com.symbol.datawedge.decoded_mode\"";
+_structure.Add((Object)("com.symbol.datawedge.decoded_mode"));
+RDebugUtils.currentLine=1507338;
+ //BA.debugLineNum = 1507338;BA.debugLine="structure.Add(\"com.motorolasolutions.emdk.datawed";
+_structure.Add((Object)("com.motorolasolutions.emdk.datawedge.source"));
+RDebugUtils.currentLine=1507339;
+ //BA.debugLineNum = 1507339;BA.debugLine="structure.Add(\"com.motorolasolutions.emdk.datawed";
+_structure.Add((Object)("com.motorolasolutions.emdk.datawedge.data_string"));
+RDebugUtils.currentLine=1507340;
+ //BA.debugLineNum = 1507340;BA.debugLine="structure.Add(\"com.motorolasolutions.emdk.datawed";
+_structure.Add((Object)("com.motorolasolutions.emdk.datawedge.label_type"));
+RDebugUtils.currentLine=1507341;
+ //BA.debugLineNum = 1507341;BA.debugLine="structure.Add(\"com.motorolasolutions.emdk.datawed";
+_structure.Add((Object)("com.motorolasolutions.emdk.datawedge.decode_data"));
+RDebugUtils.currentLine=1507342;
+ //BA.debugLineNum = 1507342;BA.debugLine="structure.Add(\"com.symbol.datawedge.api\")";
+_structure.Add((Object)("com.symbol.datawedge.api"));
+RDebugUtils.currentLine=1507343;
+ //BA.debugLineNum = 1507343;BA.debugLine="End Sub";
 return "";
 }
 public static String  _service_destroy() throws Exception{
- //BA.debugLineNum = 41;BA.debugLine="Sub Service_Destroy";
- //BA.debugLineNum = 43;BA.debugLine="End Sub";
+RDebugUtils.currentModule="scanner";
+if (Debug.shouldDelegate(processBA, "service_destroy", false))
+	 {return ((String) Debug.delegate(processBA, "service_destroy", null));}
+RDebugUtils.currentLine=1638400;
+ //BA.debugLineNum = 1638400;BA.debugLine="Sub Service_Destroy";
+RDebugUtils.currentLine=1638402;
+ //BA.debugLineNum = 1638402;BA.debugLine="End Sub";
 return "";
 }
 public static String  _service_start(anywheresoftware.b4a.objects.IntentWrapper _startingintent) throws Exception{
- //BA.debugLineNum = 31;BA.debugLine="Sub Service_Start (StartingIntent As Intent)";
- //BA.debugLineNum = 33;BA.debugLine="BC.addCategory(\"intent_category\")";
-_v5.addCategory("intent_category");
- //BA.debugLineNum = 34;BA.debugLine="BC.addAction(\"scanner_intent\")";
-_v5.addAction("scanner_intent");
- //BA.debugLineNum = 35;BA.debugLine="BC.SetPriority(20000000)";
-_v5.SetPriority((int) (20000000));
- //BA.debugLineNum = 36;BA.debugLine="BC.registerReceiver(\"scanner_intent\")";
-_v5.registerReceiver("scanner_intent");
- //BA.debugLineNum = 37;BA.debugLine="Log(\"Scanner Service Started: \" & StartingIntent.";
-anywheresoftware.b4a.keywords.Common.LogImpl("11507334","Scanner Service Started: "+_startingintent.ExtrasToString(),0);
- //BA.debugLineNum = 38;BA.debugLine="Service.StopAutomaticForeground 'Call this when t";
+RDebugUtils.currentModule="scanner";
+if (Debug.shouldDelegate(processBA, "service_start", false))
+	 {return ((String) Debug.delegate(processBA, "service_start", new Object[] {_startingintent}));}
+RDebugUtils.currentLine=1572864;
+ //BA.debugLineNum = 1572864;BA.debugLine="Sub Service_Start (StartingIntent As Intent)";
+RDebugUtils.currentLine=1572866;
+ //BA.debugLineNum = 1572866;BA.debugLine="BC.addCategory(\"intent_category\")";
+_bc.addCategory("intent_category");
+RDebugUtils.currentLine=1572867;
+ //BA.debugLineNum = 1572867;BA.debugLine="BC.addAction(\"scanner_intent\")";
+_bc.addAction("scanner_intent");
+RDebugUtils.currentLine=1572868;
+ //BA.debugLineNum = 1572868;BA.debugLine="BC.SetPriority(20000000)";
+_bc.SetPriority((int) (20000000));
+RDebugUtils.currentLine=1572869;
+ //BA.debugLineNum = 1572869;BA.debugLine="BC.registerReceiver(\"scanner_intent\")";
+_bc.registerReceiver("scanner_intent");
+RDebugUtils.currentLine=1572870;
+ //BA.debugLineNum = 1572870;BA.debugLine="Log(\"Scanner Service Started: \" & StartingIntent.";
+anywheresoftware.b4a.keywords.Common.LogImpl("21572870","Scanner Service Started: "+_startingintent.ExtrasToString(),0);
+RDebugUtils.currentLine=1572871;
+ //BA.debugLineNum = 1572871;BA.debugLine="Service.StopAutomaticForeground 'Call this when t";
 mostCurrent._service.StopAutomaticForeground();
- //BA.debugLineNum = 39;BA.debugLine="End Sub";
+RDebugUtils.currentLine=1572872;
+ //BA.debugLineNum = 1572872;BA.debugLine="End Sub";
 return "";
 }
 }

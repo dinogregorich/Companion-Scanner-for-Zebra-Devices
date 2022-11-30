@@ -34,7 +34,7 @@ public class main extends Activity implements B4AActivity{
 		super.onCreate(savedInstanceState);
         mostCurrent = this;
 		if (processBA == null) {
-			processBA = new BA(this.getApplicationContext(), null, null, "zebra.companion.scanner", "zebra.companion.scanner.main");
+			processBA = new anywheresoftware.b4a.ShellBA(this.getApplicationContext(), null, null, "zebra.companion.scanner", "zebra.companion.scanner.main");
 			processBA.loadHtSubs(this.getClass());
 	        float deviceScale = getApplicationContext().getResources().getDisplayMetrics().density;
 	        BALayout.setDeviceScale(deviceScale);
@@ -335,98 +335,210 @@ public class main extends Activity implements B4AActivity{
             
     }
 
-public anywheresoftware.b4a.keywords.Common __c = null;
-public static anywheresoftware.b4a.objects.Timer _v0 = null;
-public batteryviewwrapper.batteryviewWrapper _bv1 = null;
-public zebra.companion.scanner.batteryutilities _vv7 = null;
-public static int[] _vv0 = null;
-public anywheresoftware.b4a.objects.LabelWrapper _label_scanresult = null;
-public zebra.companion.scanner.starter _vv5 = null;
-public zebra.companion.scanner.scanner _vv6 = null;
 
+
+public static void initializeProcessGlobals() {
+    
+    if (main.processGlobalsRun == false) {
+	    main.processGlobalsRun = true;
+		try {
+		        		
+        } catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+    }
+}
 public static boolean isAnyActivityVisible() {
     boolean vis = false;
 vis = vis | (main.mostCurrent != null);
 return vis;}
+
+private static BA killProgramHelper(BA ba) {
+    if (ba == null)
+        return null;
+    anywheresoftware.b4a.BA.SharedProcessBA sharedProcessBA = ba.sharedProcessBA;
+    if (sharedProcessBA == null || sharedProcessBA.activityBA == null)
+        return null;
+    return sharedProcessBA.activityBA.get();
+}
+public static void killProgram() {
+     {
+            Activity __a = null;
+            if (main.previousOne != null) {
+				__a = main.previousOne.get();
+			}
+            else {
+                BA ba = killProgramHelper(main.mostCurrent == null ? null : main.mostCurrent.processBA);
+                if (ba != null) __a = ba.activity;
+            }
+            if (__a != null)
+				__a.finish();}
+
+BA.applicationContext.stopService(new android.content.Intent(BA.applicationContext, starter.class));
+BA.applicationContext.stopService(new android.content.Intent(BA.applicationContext, scanner.class));
+}
+public anywheresoftware.b4a.keywords.Common __c = null;
+public static anywheresoftware.b4a.objects.Timer _t = null;
+public batteryviewwrapper.batteryviewWrapper _bv1 = null;
+public zebra.companion.scanner.batteryutilities _bu = null;
+public static int[] _batterystatus = null;
+public anywheresoftware.b4a.objects.LabelWrapper _label_scanresult = null;
+public zebra.companion.scanner.starter _starter = null;
+public zebra.companion.scanner.scanner _scanner = null;
 public static String  _activity_create(boolean _firsttime) throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "activity_create", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "activity_create", new Object[] {_firsttime}));}
 anywheresoftware.b4a.agraham.reflection.Reflection _r = null;
- //BA.debugLineNum = 31;BA.debugLine="Sub Activity_Create(FirstTime As Boolean)";
- //BA.debugLineNum = 32;BA.debugLine="Dim r As Reflector";
+RDebugUtils.currentLine=131072;
+ //BA.debugLineNum = 131072;BA.debugLine="Sub Activity_Create(FirstTime As Boolean)";
+RDebugUtils.currentLine=131073;
+ //BA.debugLineNum = 131073;BA.debugLine="Dim r As Reflector";
 _r = new anywheresoftware.b4a.agraham.reflection.Reflection();
- //BA.debugLineNum = 33;BA.debugLine="r.Target = r.GetContext";
+RDebugUtils.currentLine=131074;
+ //BA.debugLineNum = 131074;BA.debugLine="r.Target = r.GetContext";
 _r.Target = (Object)(_r.GetContext(processBA));
- //BA.debugLineNum = 34;BA.debugLine="r.Target = r.RunMethod(\"getResources\")";
+RDebugUtils.currentLine=131075;
+ //BA.debugLineNum = 131075;BA.debugLine="r.Target = r.RunMethod(\"getResources\")";
 _r.Target = _r.RunMethod("getResources");
- //BA.debugLineNum = 35;BA.debugLine="r.Target = r.RunMethod(\"getDisplayMetrics\")";
+RDebugUtils.currentLine=131076;
+ //BA.debugLineNum = 131076;BA.debugLine="r.Target = r.RunMethod(\"getDisplayMetrics\")";
 _r.Target = _r.RunMethod("getDisplayMetrics");
- //BA.debugLineNum = 51;BA.debugLine="Activity.Height = 110%y";
+RDebugUtils.currentLine=131092;
+ //BA.debugLineNum = 131092;BA.debugLine="Activity.Height = 110%y";
 mostCurrent._activity.setHeight(anywheresoftware.b4a.keywords.Common.PerYToCurrent((float) (110),mostCurrent.activityBA));
- //BA.debugLineNum = 53;BA.debugLine="If GetDeviceLayoutValues.Width/r.GetField(\"xdpi\")";
+RDebugUtils.currentLine=131094;
+ //BA.debugLineNum = 131094;BA.debugLine="If GetDeviceLayoutValues.Width/r.GetField(\"xdpi\")";
 if (anywheresoftware.b4a.keywords.Common.GetDeviceLayoutValues(mostCurrent.activityBA).Width/(double)(double)(BA.ObjectToNumber(_r.GetField("xdpi")))<2) { 
- //BA.debugLineNum = 54;BA.debugLine="Activity.LoadLayout(\"main_small\")";
+RDebugUtils.currentLine=131095;
+ //BA.debugLineNum = 131095;BA.debugLine="Activity.LoadLayout(\"main_small\")";
 mostCurrent._activity.LoadLayout("main_small",mostCurrent.activityBA);
  }else {
- //BA.debugLineNum = 56;BA.debugLine="Activity.LoadLayout(\"main_normal\")";
+RDebugUtils.currentLine=131097;
+ //BA.debugLineNum = 131097;BA.debugLine="Activity.LoadLayout(\"main_normal\")";
 mostCurrent._activity.LoadLayout("main_normal",mostCurrent.activityBA);
  };
- //BA.debugLineNum = 59;BA.debugLine="bu.Initialize";
-mostCurrent._vv7._initialize /*String*/ (processBA);
- //BA.debugLineNum = 60;BA.debugLine="batterystatus = bu.BatteryInformation";
-_vv0 = mostCurrent._vv7._getvv2 /*int[]*/ ();
- //BA.debugLineNum = 61;BA.debugLine="bv1.Level = batterystatus(0)";
-mostCurrent._bv1.setLevel(_vv0[(int) (0)]);
- //BA.debugLineNum = 62;BA.debugLine="If batterystatus(8) = 1 Then";
-if (_vv0[(int) (8)]==1) { 
- //BA.debugLineNum = 63;BA.debugLine="bv1.Charging = True";
+RDebugUtils.currentLine=131100;
+ //BA.debugLineNum = 131100;BA.debugLine="bu.Initialize";
+mostCurrent._bu._initialize /*String*/ (null,processBA);
+RDebugUtils.currentLine=131101;
+ //BA.debugLineNum = 131101;BA.debugLine="batterystatus = bu.BatteryInformation";
+_batterystatus = mostCurrent._bu._getbatteryinformation /*int[]*/ (null);
+RDebugUtils.currentLine=131102;
+ //BA.debugLineNum = 131102;BA.debugLine="bv1.Level = batterystatus(0)";
+mostCurrent._bv1.setLevel(_batterystatus[(int) (0)]);
+RDebugUtils.currentLine=131103;
+ //BA.debugLineNum = 131103;BA.debugLine="If batterystatus(8) = 1 Then";
+if (_batterystatus[(int) (8)]==1) { 
+RDebugUtils.currentLine=131104;
+ //BA.debugLineNum = 131104;BA.debugLine="bv1.Charging = True";
 mostCurrent._bv1.setCharging(anywheresoftware.b4a.keywords.Common.True);
  }else {
- //BA.debugLineNum = 65;BA.debugLine="bv1.Charging = False";
+RDebugUtils.currentLine=131106;
+ //BA.debugLineNum = 131106;BA.debugLine="bv1.Charging = False";
 mostCurrent._bv1.setCharging(anywheresoftware.b4a.keywords.Common.False);
  };
- //BA.debugLineNum = 67;BA.debugLine="t.Initialize(\"t\", 20000)";
-_v0.Initialize(processBA,"t",(long) (20000));
- //BA.debugLineNum = 68;BA.debugLine="End Sub";
+RDebugUtils.currentLine=131108;
+ //BA.debugLineNum = 131108;BA.debugLine="t.Initialize(\"t\", 20000)";
+_t.Initialize(processBA,"t",(long) (20000));
+RDebugUtils.currentLine=131109;
+ //BA.debugLineNum = 131109;BA.debugLine="End Sub";
 return "";
 }
 public static String  _activity_pause(boolean _userclosed) throws Exception{
- //BA.debugLineNum = 87;BA.debugLine="Sub Activity_Pause (UserClosed As Boolean)";
- //BA.debugLineNum = 88;BA.debugLine="t.Enabled = False";
-_v0.setEnabled(anywheresoftware.b4a.keywords.Common.False);
- //BA.debugLineNum = 89;BA.debugLine="End Sub";
+RDebugUtils.currentModule="main";
+RDebugUtils.currentLine=262144;
+ //BA.debugLineNum = 262144;BA.debugLine="Sub Activity_Pause (UserClosed As Boolean)";
+RDebugUtils.currentLine=262145;
+ //BA.debugLineNum = 262145;BA.debugLine="t.Enabled = False";
+_t.setEnabled(anywheresoftware.b4a.keywords.Common.False);
+RDebugUtils.currentLine=262146;
+ //BA.debugLineNum = 262146;BA.debugLine="End Sub";
 return "";
 }
 public static String  _activity_resume() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "activity_resume", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "activity_resume", null));}
 anywheresoftware.b4j.object.JavaObject _jo = null;
 String _strmsg = "";
- //BA.debugLineNum = 70;BA.debugLine="Sub Activity_Resume";
- //BA.debugLineNum = 71;BA.debugLine="Try";
-try { //BA.debugLineNum = 72;BA.debugLine="Dim jo As JavaObject = Activity";
+RDebugUtils.currentLine=196608;
+ //BA.debugLineNum = 196608;BA.debugLine="Sub Activity_Resume";
+RDebugUtils.currentLine=196609;
+ //BA.debugLineNum = 196609;BA.debugLine="Try";
+try {RDebugUtils.currentLine=196610;
+ //BA.debugLineNum = 196610;BA.debugLine="Dim jo As JavaObject = Activity";
 _jo = new anywheresoftware.b4j.object.JavaObject();
 _jo = (anywheresoftware.b4j.object.JavaObject) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4j.object.JavaObject(), (java.lang.Object)(mostCurrent._activity.getObject()));
- //BA.debugLineNum = 73;BA.debugLine="jo.RunMethod(\"setSystemUiVisibility\", Array As O";
+RDebugUtils.currentLine=196611;
+ //BA.debugLineNum = 196611;BA.debugLine="jo.RunMethod(\"setSystemUiVisibility\", Array As O";
 _jo.RunMethod("setSystemUiVisibility",new Object[]{(Object)(5894)});
  } 
        catch (Exception e5) {
 			processBA.setLastException(e5); };
- //BA.debugLineNum = 77;BA.debugLine="Dim strMsg As String = \"Press Scan Button(s) To B";
+RDebugUtils.currentLine=196615;
+ //BA.debugLineNum = 196615;BA.debugLine="Dim strMsg As String = \"Press Scan Button(s) To B";
 _strmsg = "Press Scan Button(s) To Begin."+anywheresoftware.b4a.keywords.Common.CRLF+anywheresoftware.b4a.keywords.Common.CRLF+"When finished, tap 'Save' to save the captured scans to a directory.";
- //BA.debugLineNum = 78;BA.debugLine="strMsg = strMsg & CRLF & CRLF & \"A confirmation m";
+RDebugUtils.currentLine=196616;
+ //BA.debugLineNum = 196616;BA.debugLine="strMsg = strMsg & CRLF & CRLF & \"A confirmation m";
 _strmsg = _strmsg+anywheresoftware.b4a.keywords.Common.CRLF+anywheresoftware.b4a.keywords.Common.CRLF+"A confirmation message will appear when successfully saved.";
- //BA.debugLineNum = 79;BA.debugLine="label_scanResult.Text = strMsg";
+RDebugUtils.currentLine=196617;
+ //BA.debugLineNum = 196617;BA.debugLine="label_scanResult.Text = strMsg";
 mostCurrent._label_scanresult.setText(BA.ObjectToCharSequence(_strmsg));
- //BA.debugLineNum = 80;BA.debugLine="label_scanResult.TextColor = Colors.ARGB(255, 22,";
+RDebugUtils.currentLine=196618;
+ //BA.debugLineNum = 196618;BA.debugLine="label_scanResult.TextColor = Colors.ARGB(255, 22,";
 mostCurrent._label_scanresult.setTextColor(anywheresoftware.b4a.keywords.Common.Colors.ARGB((int) (255),(int) (22),(int) (22),(int) (22)));
- //BA.debugLineNum = 81;BA.debugLine="t.Enabled = True";
-_v0.setEnabled(anywheresoftware.b4a.keywords.Common.True);
- //BA.debugLineNum = 82;BA.debugLine="If File.Exists(File.DirInternal,\"SCANS.tmp\") = Tr";
+RDebugUtils.currentLine=196619;
+ //BA.debugLineNum = 196619;BA.debugLine="t.Enabled = True";
+_t.setEnabled(anywheresoftware.b4a.keywords.Common.True);
+RDebugUtils.currentLine=196620;
+ //BA.debugLineNum = 196620;BA.debugLine="If File.Exists(File.DirInternal,\"SCANS.tmp\") = Tr";
 if (anywheresoftware.b4a.keywords.Common.File.Exists(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp")==anywheresoftware.b4a.keywords.Common.True) { 
- //BA.debugLineNum = 83;BA.debugLine="FindViewByTag(Activity,\"AppSave\").Enabled = True";
-_vvv1((anywheresoftware.b4a.objects.PanelWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.PanelWrapper(), (android.view.ViewGroup)(mostCurrent._activity.getObject())),"AppSave").setEnabled(anywheresoftware.b4a.keywords.Common.True);
+RDebugUtils.currentLine=196621;
+ //BA.debugLineNum = 196621;BA.debugLine="FindViewByTag(Activity,\"AppSave\").Enabled = True";
+_findviewbytag((anywheresoftware.b4a.objects.PanelWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.PanelWrapper(), (android.view.ViewGroup)(mostCurrent._activity.getObject())),"AppSave").setEnabled(anywheresoftware.b4a.keywords.Common.True);
  };
- //BA.debugLineNum = 85;BA.debugLine="End Sub";
+RDebugUtils.currentLine=196623;
+ //BA.debugLineNum = 196623;BA.debugLine="End Sub";
 return "";
 }
+public static anywheresoftware.b4a.objects.ConcreteViewWrapper  _findviewbytag(anywheresoftware.b4a.objects.PanelWrapper _parent,String _name) throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "findviewbytag", false))
+	 {return ((anywheresoftware.b4a.objects.ConcreteViewWrapper) Debug.delegate(mostCurrent.activityBA, "findviewbytag", new Object[] {_parent,_name}));}
+anywheresoftware.b4a.objects.ConcreteViewWrapper _v = null;
+RDebugUtils.currentLine=983040;
+ //BA.debugLineNum = 983040;BA.debugLine="Sub FindViewByTag(Parent As Panel, Name As String)";
+RDebugUtils.currentLine=983041;
+ //BA.debugLineNum = 983041;BA.debugLine="For Each v As View In Parent.GetAllViewsRecursive";
+_v = new anywheresoftware.b4a.objects.ConcreteViewWrapper();
+{
+final anywheresoftware.b4a.BA.IterableList group1 = _parent.GetAllViewsRecursive();
+final int groupLen1 = group1.getSize()
+;int index1 = 0;
+;
+for (; index1 < groupLen1;index1++){
+_v = (anywheresoftware.b4a.objects.ConcreteViewWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.ConcreteViewWrapper(), (android.view.View)(group1.Get(index1)));
+RDebugUtils.currentLine=983042;
+ //BA.debugLineNum = 983042;BA.debugLine="If Name = v.Tag Then Return v";
+if ((_name).equals(BA.ObjectToString(_v.getTag()))) { 
+if (true) return _v;};
+ }
+};
+RDebugUtils.currentLine=983044;
+ //BA.debugLineNum = 983044;BA.debugLine="Log(\"View not found: \" & Name)";
+anywheresoftware.b4a.keywords.Common.LogImpl("2983044","View not found: "+_name,0);
+RDebugUtils.currentLine=983045;
+ //BA.debugLineNum = 983045;BA.debugLine="Return Null";
+if (true) return (anywheresoftware.b4a.objects.ConcreteViewWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.ConcreteViewWrapper(), (android.view.View)(anywheresoftware.b4a.keywords.Common.Null));
+RDebugUtils.currentLine=983046;
+ //BA.debugLineNum = 983046;BA.debugLine="End Sub";
+return null;
+}
 public static void  _buttonsave_click() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "buttonsave_click", false))
+	 {Debug.delegate(mostCurrent.activityBA, "buttonsave_click", null); return;}
 ResumableSub_ButtonSave_Click rsub = new ResumableSub_ButtonSave_Click(null);
 rsub.resume(processBA, null);
 }
@@ -440,6 +552,7 @@ boolean _success = false;
 
 @Override
 public void resume(BA ba, Object[] result) throws Exception{
+RDebugUtils.currentModule="main";
 
     while (true) {
         switch (state) {
@@ -449,12 +562,15 @@ return;
 case 0:
 //C
 this.state = 1;
- //BA.debugLineNum = 109;BA.debugLine="DateTime.DateFormat=\"yyMMdd-HHmmss\"";
+RDebugUtils.currentLine=393217;
+ //BA.debugLineNum = 393217;BA.debugLine="DateTime.DateFormat=\"yyMMdd-HHmmss\"";
 anywheresoftware.b4a.keywords.Common.DateTime.setDateFormat("yyMMdd-HHmmss");
- //BA.debugLineNum = 110;BA.debugLine="Dim strFileName As String = \"scans_\" & DateTime.D";
+RDebugUtils.currentLine=393218;
+ //BA.debugLineNum = 393218;BA.debugLine="Dim strFileName As String = \"scans_\" & DateTime.D";
 _strfilename = "scans_"+anywheresoftware.b4a.keywords.Common.DateTime.Date(anywheresoftware.b4a.keywords.Common.DateTime.getNow())+".csv";
- //BA.debugLineNum = 111;BA.debugLine="Wait For (SaveAs(File.OpenInput(File.DirInternal,";
-anywheresoftware.b4a.keywords.Common.WaitFor("complete", processBA, this, _vvv2(anywheresoftware.b4a.keywords.Common.File.OpenInput(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp"),"application/octet-stream",_strfilename));
+RDebugUtils.currentLine=393219;
+ //BA.debugLineNum = 393219;BA.debugLine="Wait For (SaveAs(File.OpenInput(File.DirInternal,";
+anywheresoftware.b4a.keywords.Common.WaitFor("complete", processBA, new anywheresoftware.b4a.shell.DebugResumableSub.DelegatableResumableSub(this, "main", "buttonsave_click"), _saveas(anywheresoftware.b4a.keywords.Common.File.OpenInput(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp"),"application/octet-stream",_strfilename));
 this.state = 7;
 return;
 case 7:
@@ -462,9 +578,11 @@ case 7:
 this.state = 1;
 _success = (Boolean) result[0];
 ;
- //BA.debugLineNum = 112;BA.debugLine="Log(\"File saved successfully? \" & Success)";
-anywheresoftware.b4a.keywords.Common.LogImpl("1393220","File saved successfully? "+BA.ObjectToString(_success),0);
- //BA.debugLineNum = 113;BA.debugLine="If Success = True Then";
+RDebugUtils.currentLine=393220;
+ //BA.debugLineNum = 393220;BA.debugLine="Log(\"File saved successfully? \" & Success)";
+anywheresoftware.b4a.keywords.Common.LogImpl("2393220","File saved successfully? "+BA.ObjectToString(_success),0);
+RDebugUtils.currentLine=393221;
+ //BA.debugLineNum = 393221;BA.debugLine="If Success = True Then";
 if (true) break;
 
 case 1:
@@ -479,16 +597,19 @@ this.state = 5;
 case 3:
 //C
 this.state = 6;
- //BA.debugLineNum = 114;BA.debugLine="File.Delete(File.DirInternal,\"SCANS.tmp\")";
+RDebugUtils.currentLine=393222;
+ //BA.debugLineNum = 393222;BA.debugLine="File.Delete(File.DirInternal,\"SCANS.tmp\")";
 anywheresoftware.b4a.keywords.Common.File.Delete(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp");
- //BA.debugLineNum = 115;BA.debugLine="FindViewByTag(Activity,\"AppSave\").Enabled = Fals";
-_vvv1((anywheresoftware.b4a.objects.PanelWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.PanelWrapper(), (android.view.ViewGroup)(parent.mostCurrent._activity.getObject())),"AppSave").setEnabled(anywheresoftware.b4a.keywords.Common.False);
+RDebugUtils.currentLine=393223;
+ //BA.debugLineNum = 393223;BA.debugLine="FindViewByTag(Activity,\"AppSave\").Enabled = Fals";
+_findviewbytag((anywheresoftware.b4a.objects.PanelWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.PanelWrapper(), (android.view.ViewGroup)(parent.mostCurrent._activity.getObject())),"AppSave").setEnabled(anywheresoftware.b4a.keywords.Common.False);
  if (true) break;
 
 case 5:
 //C
 this.state = 6;
- //BA.debugLineNum = 117;BA.debugLine="MsgboxAsync(\"File did not save.  Try again\", \"Wr";
+RDebugUtils.currentLine=393225;
+ //BA.debugLineNum = 393225;BA.debugLine="MsgboxAsync(\"File did not save.  Try again\", \"Wr";
 anywheresoftware.b4a.keywords.Common.MsgboxAsync(BA.ObjectToCharSequence("File did not save.  Try again"),BA.ObjectToCharSequence("Write File Error"),processBA);
  if (true) break;
 
@@ -496,244 +617,18 @@ case 6:
 //C
 this.state = -1;
 ;
- //BA.debugLineNum = 119;BA.debugLine="End Sub";
+RDebugUtils.currentLine=393227;
+ //BA.debugLineNum = 393227;BA.debugLine="End Sub";
 if (true) break;
 
             }
         }
     }
 }
-public static void  _complete(boolean _success) throws Exception{
-}
-public static anywheresoftware.b4a.objects.ConcreteViewWrapper  _vvv1(anywheresoftware.b4a.objects.PanelWrapper _parent,String _name) throws Exception{
-anywheresoftware.b4a.objects.ConcreteViewWrapper _v = null;
- //BA.debugLineNum = 201;BA.debugLine="Sub FindViewByTag(Parent As Panel, Name As String)";
- //BA.debugLineNum = 202;BA.debugLine="For Each v As View In Parent.GetAllViewsRecursive";
-_v = new anywheresoftware.b4a.objects.ConcreteViewWrapper();
-{
-final anywheresoftware.b4a.BA.IterableList group1 = _parent.GetAllViewsRecursive();
-final int groupLen1 = group1.getSize()
-;int index1 = 0;
-;
-for (; index1 < groupLen1;index1++){
-_v = (anywheresoftware.b4a.objects.ConcreteViewWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.ConcreteViewWrapper(), (android.view.View)(group1.Get(index1)));
- //BA.debugLineNum = 203;BA.debugLine="If Name = v.Tag Then Return v";
-if ((_name).equals(BA.ObjectToString(_v.getTag()))) { 
-if (true) return _v;};
- }
-};
- //BA.debugLineNum = 205;BA.debugLine="Log(\"View not found: \" & Name)";
-anywheresoftware.b4a.keywords.Common.LogImpl("1917508","View not found: "+_name,0);
- //BA.debugLineNum = 206;BA.debugLine="Return Null";
-if (true) return (anywheresoftware.b4a.objects.ConcreteViewWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.ConcreteViewWrapper(), (android.view.View)(anywheresoftware.b4a.keywords.Common.Null));
- //BA.debugLineNum = 207;BA.debugLine="End Sub";
-return null;
-}
-public static Object  _vvv3() throws Exception{
-anywheresoftware.b4j.object.JavaObject _jo = null;
-String _cls = "";
- //BA.debugLineNum = 150;BA.debugLine="Sub GetBA As Object";
- //BA.debugLineNum = 151;BA.debugLine="Dim jo As JavaObject";
-_jo = new anywheresoftware.b4j.object.JavaObject();
- //BA.debugLineNum = 152;BA.debugLine="Dim cls As String = Me";
-_cls = BA.ObjectToString(main.getObject());
- //BA.debugLineNum = 153;BA.debugLine="cls = cls.SubString(\"class \".Length)";
-_cls = _cls.substring("class ".length());
- //BA.debugLineNum = 154;BA.debugLine="jo.InitializeStatic(cls)";
-_jo.InitializeStatic(_cls);
- //BA.debugLineNum = 155;BA.debugLine="Return jo.GetField(\"processBA\")";
-if (true) return _jo.GetField("processBA");
- //BA.debugLineNum = 156;BA.debugLine="End Sub";
-return null;
-}
-public static String  _globals() throws Exception{
- //BA.debugLineNum = 22;BA.debugLine="Sub Globals";
- //BA.debugLineNum = 25;BA.debugLine="Private bv1 As BatteryView";
-mostCurrent._bv1 = new batteryviewwrapper.batteryviewWrapper();
- //BA.debugLineNum = 26;BA.debugLine="Private bu As BatteryUtilities";
-mostCurrent._vv7 = new zebra.companion.scanner.batteryutilities();
- //BA.debugLineNum = 27;BA.debugLine="Dim batterystatus(11) As Int";
-_vv0 = new int[(int) (11)];
-;
- //BA.debugLineNum = 28;BA.debugLine="Private label_scanResult As Label";
-mostCurrent._label_scanresult = new anywheresoftware.b4a.objects.LabelWrapper();
- //BA.debugLineNum = 29;BA.debugLine="End Sub";
-return "";
-}
-public static void  _imageview1_click() throws Exception{
-ResumableSub_ImageView1_Click rsub = new ResumableSub_ImageView1_Click(null);
-rsub.resume(processBA, null);
-}
-public static class ResumableSub_ImageView1_Click extends BA.ResumableSub {
-public ResumableSub_ImageView1_Click(zebra.companion.scanner.main parent) {
-this.parent = parent;
-}
-zebra.companion.scanner.main parent;
-int _result = 0;
-String _strfilename = "";
-boolean _success = false;
-
-@Override
-public void resume(BA ba, Object[] result) throws Exception{
-
-    while (true) {
-        switch (state) {
-            case -1:
-return;
-
-case 0:
-//C
-this.state = 1;
- //BA.debugLineNum = 181;BA.debugLine="MsgboxAsync(\"Copy DataWedge profile to a location";
-anywheresoftware.b4a.keywords.Common.MsgboxAsync(BA.ObjectToCharSequence("Copy DataWedge profile to a location such as the downloads directory. Then import profile into DataWedge."),BA.ObjectToCharSequence("DataWedge Profile"),processBA);
- //BA.debugLineNum = 182;BA.debugLine="Wait For MsgBox_Result (Result As Int)";
-anywheresoftware.b4a.keywords.Common.WaitFor("msgbox_result", processBA, this, null);
-this.state = 5;
-return;
-case 5:
-//C
-this.state = 1;
-_result = (Integer) result[0];
-;
- //BA.debugLineNum = 183;BA.debugLine="Dim strFileName As String = \"dwprofile_ZebraCompa";
-_strfilename = "dwprofile_ZebraCompanionScanner_DW6.db";
- //BA.debugLineNum = 184;BA.debugLine="Wait For (SaveAs(File.OpenInput(File.DirAssets,st";
-anywheresoftware.b4a.keywords.Common.WaitFor("complete", processBA, this, _vvv2(anywheresoftware.b4a.keywords.Common.File.OpenInput(anywheresoftware.b4a.keywords.Common.File.getDirAssets(),_strfilename),"application/x-sqlite3",_strfilename));
-this.state = 6;
-return;
-case 6:
-//C
-this.state = 1;
-_success = (Boolean) result[0];
-;
- //BA.debugLineNum = 185;BA.debugLine="Log(\"File saved successfully? \" & Success)";
-anywheresoftware.b4a.keywords.Common.LogImpl("1720901","File saved successfully? "+BA.ObjectToString(_success),0);
- //BA.debugLineNum = 186;BA.debugLine="If Success = False Then";
-if (true) break;
-
-case 1:
-//if
-this.state = 4;
-if (_success==anywheresoftware.b4a.keywords.Common.False) { 
-this.state = 3;
-}if (true) break;
-
-case 3:
-//C
-this.state = 4;
- //BA.debugLineNum = 187;BA.debugLine="MsgboxAsync(\"File did not save.  Try again\", \"Wr";
-anywheresoftware.b4a.keywords.Common.MsgboxAsync(BA.ObjectToCharSequence("File did not save.  Try again"),BA.ObjectToCharSequence("Write File Error"),processBA);
- if (true) break;
-
-case 4:
-//C
-this.state = -1;
-;
- //BA.debugLineNum = 189;BA.debugLine="End Sub";
-if (true) break;
-
-            }
-        }
-    }
-}
-public static void  _msgbox_result(int _result) throws Exception{
-}
-
-public static void initializeProcessGlobals() {
-    
-    if (main.processGlobalsRun == false) {
-	    main.processGlobalsRun = true;
-		try {
-		        main._process_globals();
-starter._process_globals();
-scanner._process_globals();
-		
-        } catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-    }
-}
-
-private static byte[][] bb;
-
-public static String vvv13(final byte[] _b, final int i) throws Exception {
-Runnable r = new Runnable() {
-{
-
-int value = i / 2 + 464891;
-if (bb == null) {
-		
-                bb = new byte[4][];
-				bb[0] = BA.packageName.getBytes("UTF8");
-                bb[1] = BA.applicationContext.getPackageManager().getPackageInfo(BA.packageName, 0).versionName.getBytes("UTF8");
-                if (bb[1].length == 0)
-                    bb[1] = "jsdkfh".getBytes("UTF8");
-                bb[2] = new byte[] { (byte)BA.applicationContext.getPackageManager().getPackageInfo(BA.packageName, 0).versionCode };			
-        }
-        bb[3] = new byte[] {
-                    (byte) (value >>> 24),
-						(byte) (value >>> 16),
-						(byte) (value >>> 8),
-						(byte) value};
-				try {
-					for (int __b = 0;__b < (3 + 1);__b ++) {
-						for (int b = 0;b<_b.length;b++) {
-							_b[b] ^= bb[__b][b % bb[__b].length];
-						}
-					}
-
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-                
-
-            
-}
-public void run() {
-}
-};
-return new String(_b, "UTF8");
-}
-public static String  _process_globals() throws Exception{
- //BA.debugLineNum = 16;BA.debugLine="Sub Process_Globals";
- //BA.debugLineNum = 19;BA.debugLine="Dim t As Timer";
-_v0 = new anywheresoftware.b4a.objects.Timer();
- //BA.debugLineNum = 20;BA.debugLine="End Sub";
-return "";
-}
-public static String  _processscan(String _s) throws Exception{
-anywheresoftware.b4a.objects.streams.File.TextWriterWrapper _writer = null;
- //BA.debugLineNum = 91;BA.debugLine="Sub ProcessScan (s As String)";
- //BA.debugLineNum = 92;BA.debugLine="Log(s)";
-anywheresoftware.b4a.keywords.Common.LogImpl("1327681",_s,0);
- //BA.debugLineNum = 93;BA.debugLine="label_scanResult.Text = s.Replace(\",\",CRLF)";
-mostCurrent._label_scanresult.setText(BA.ObjectToCharSequence(_s.replace(",",anywheresoftware.b4a.keywords.Common.CRLF)));
- //BA.debugLineNum = 94;BA.debugLine="Dim Writer As TextWriter";
-_writer = new anywheresoftware.b4a.objects.streams.File.TextWriterWrapper();
- //BA.debugLineNum = 95;BA.debugLine="If File.Exists(File.DirInternal,\"SCANS.tmp\") = Fa";
-if (anywheresoftware.b4a.keywords.Common.File.Exists(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp")==anywheresoftware.b4a.keywords.Common.False) { 
- //BA.debugLineNum = 96;BA.debugLine="Writer.Initialize(File.OpenOutput(File.DirIntern";
-_writer.Initialize((java.io.OutputStream)(anywheresoftware.b4a.keywords.Common.File.OpenOutput(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp",anywheresoftware.b4a.keywords.Common.True).getObject()));
- //BA.debugLineNum = 97;BA.debugLine="Writer.WriteLine(Chr(34) & \"Date/Time\" & Chr(34)";
-_writer.WriteLine(BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+"Date/Time"+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+","+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+"Symbology"+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+","+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+"Value"+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34))));
- //BA.debugLineNum = 98;BA.debugLine="Writer.WriteLine(s)";
-_writer.WriteLine(_s);
- //BA.debugLineNum = 99;BA.debugLine="Writer.Close";
-_writer.Close();
- }else {
- //BA.debugLineNum = 101;BA.debugLine="Writer.Initialize(File.OpenOutput(File.DirIntern";
-_writer.Initialize((java.io.OutputStream)(anywheresoftware.b4a.keywords.Common.File.OpenOutput(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp",anywheresoftware.b4a.keywords.Common.True).getObject()));
- //BA.debugLineNum = 102;BA.debugLine="Writer.WriteLine(s)";
-_writer.WriteLine(_s);
- //BA.debugLineNum = 103;BA.debugLine="Writer.Close";
-_writer.Close();
- };
- //BA.debugLineNum = 105;BA.debugLine="FindViewByTag(Activity,\"AppSave\").Enabled = True";
-_vvv1((anywheresoftware.b4a.objects.PanelWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.PanelWrapper(), (android.view.ViewGroup)(mostCurrent._activity.getObject())),"AppSave").setEnabled(anywheresoftware.b4a.keywords.Common.True);
- //BA.debugLineNum = 106;BA.debugLine="End Sub";
-return "";
-}
-public static anywheresoftware.b4a.keywords.Common.ResumableSubWrapper  _vvv2(anywheresoftware.b4a.objects.streams.File.InputStreamWrapper _source,String _mimetype,String _title) throws Exception{
+public static anywheresoftware.b4a.keywords.Common.ResumableSubWrapper  _saveas(anywheresoftware.b4a.objects.streams.File.InputStreamWrapper _source,String _mimetype,String _title) throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "saveas", false))
+	 {return ((anywheresoftware.b4a.keywords.Common.ResumableSubWrapper) Debug.delegate(mostCurrent.activityBA, "saveas", new Object[] {_source,_mimetype,_title}));}
 ResumableSub_SaveAs rsub = new ResumableSub_SaveAs(null,_source,_mimetype,_title);
 rsub.resume(processBA, null);
 return (anywheresoftware.b4a.keywords.Common.ResumableSubWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.keywords.Common.ResumableSubWrapper(), rsub);
@@ -759,6 +654,7 @@ anywheresoftware.b4a.objects.streams.File.OutputStreamWrapper _out = null;
 
 @Override
 public void resume(BA ba, Object[] result) throws Exception{
+RDebugUtils.currentModule="main";
 
     while (true) {
         switch (state) {
@@ -768,20 +664,27 @@ anywheresoftware.b4a.keywords.Common.ReturnFromResumableSub(this,null);return;}
 case 0:
 //C
 this.state = 1;
- //BA.debugLineNum = 122;BA.debugLine="Dim intent As Intent";
+RDebugUtils.currentLine=458753;
+ //BA.debugLineNum = 458753;BA.debugLine="Dim intent As Intent";
 _intent = new anywheresoftware.b4a.objects.IntentWrapper();
- //BA.debugLineNum = 123;BA.debugLine="intent.Initialize(\"android.intent.action.CREATE_D";
+RDebugUtils.currentLine=458754;
+ //BA.debugLineNum = 458754;BA.debugLine="intent.Initialize(\"android.intent.action.CREATE_D";
 _intent.Initialize("android.intent.action.CREATE_DOCUMENT","");
- //BA.debugLineNum = 124;BA.debugLine="intent.AddCategory(\"android.intent.category.OPENA";
+RDebugUtils.currentLine=458755;
+ //BA.debugLineNum = 458755;BA.debugLine="intent.AddCategory(\"android.intent.category.OPENA";
 _intent.AddCategory("android.intent.category.OPENABLE");
- //BA.debugLineNum = 125;BA.debugLine="intent.PutExtra(\"android.intent.extra.TITLE\", Tit";
+RDebugUtils.currentLine=458756;
+ //BA.debugLineNum = 458756;BA.debugLine="intent.PutExtra(\"android.intent.extra.TITLE\", Tit";
 _intent.PutExtra("android.intent.extra.TITLE",(Object)(_title));
- //BA.debugLineNum = 126;BA.debugLine="intent.SetType(MimeType)";
+RDebugUtils.currentLine=458757;
+ //BA.debugLineNum = 458757;BA.debugLine="intent.SetType(MimeType)";
 _intent.SetType(_mimetype);
- //BA.debugLineNum = 127;BA.debugLine="StartActivityForResult(intent)";
-_vvv4(_intent);
- //BA.debugLineNum = 128;BA.debugLine="Wait For ion_Event (MethodName As String, Args()";
-anywheresoftware.b4a.keywords.Common.WaitFor("ion_event", processBA, this, null);
+RDebugUtils.currentLine=458758;
+ //BA.debugLineNum = 458758;BA.debugLine="StartActivityForResult(intent)";
+_startactivityforresult(_intent);
+RDebugUtils.currentLine=458759;
+ //BA.debugLineNum = 458759;BA.debugLine="Wait For ion_Event (MethodName As String, Args()";
+anywheresoftware.b4a.keywords.Common.WaitFor("ion_event", processBA, new anywheresoftware.b4a.shell.DebugResumableSub.DelegatableResumableSub(this, "main", "saveas"), null);
 this.state = 5;
 return;
 case 5:
@@ -790,7 +693,8 @@ this.state = 1;
 _methodname = (String) result[0];
 _args = (Object[]) result[1];
 ;
- //BA.debugLineNum = 129;BA.debugLine="If -1 = Args(0) Then";
+RDebugUtils.currentLine=458760;
+ //BA.debugLineNum = 458760;BA.debugLine="If -1 = Args(0) Then";
 if (true) break;
 
 case 1:
@@ -803,24 +707,32 @@ this.state = 3;
 case 3:
 //C
 this.state = 4;
- //BA.debugLineNum = 131;BA.debugLine="Dim result As Intent = Args(1)";
+RDebugUtils.currentLine=458762;
+ //BA.debugLineNum = 458762;BA.debugLine="Dim result As Intent = Args(1)";
 _result = new anywheresoftware.b4a.objects.IntentWrapper();
 _result = (anywheresoftware.b4a.objects.IntentWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.IntentWrapper(), (android.content.Intent)(_args[(int) (1)]));
- //BA.debugLineNum = 132;BA.debugLine="Dim jo As JavaObject = result";
+RDebugUtils.currentLine=458763;
+ //BA.debugLineNum = 458763;BA.debugLine="Dim jo As JavaObject = result";
 _jo = new anywheresoftware.b4j.object.JavaObject();
 _jo = (anywheresoftware.b4j.object.JavaObject) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4j.object.JavaObject(), (java.lang.Object)(_result.getObject()));
- //BA.debugLineNum = 133;BA.debugLine="Dim ctxt As JavaObject";
+RDebugUtils.currentLine=458764;
+ //BA.debugLineNum = 458764;BA.debugLine="Dim ctxt As JavaObject";
 _ctxt = new anywheresoftware.b4j.object.JavaObject();
- //BA.debugLineNum = 134;BA.debugLine="Dim out As OutputStream = ctxt.InitializeContext";
+RDebugUtils.currentLine=458765;
+ //BA.debugLineNum = 458765;BA.debugLine="Dim out As OutputStream = ctxt.InitializeContext";
 _out = new anywheresoftware.b4a.objects.streams.File.OutputStreamWrapper();
 _out = (anywheresoftware.b4a.objects.streams.File.OutputStreamWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.streams.File.OutputStreamWrapper(), (java.io.OutputStream)(_ctxt.InitializeContext(processBA).RunMethodJO("getContentResolver",(Object[])(anywheresoftware.b4a.keywords.Common.Null)).RunMethod("openOutputStream",new Object[]{_jo.RunMethod("getData",(Object[])(anywheresoftware.b4a.keywords.Common.Null))})));
- //BA.debugLineNum = 135;BA.debugLine="File.Copy2(Source, out)";
+RDebugUtils.currentLine=458766;
+ //BA.debugLineNum = 458766;BA.debugLine="File.Copy2(Source, out)";
 anywheresoftware.b4a.keywords.Common.File.Copy2((java.io.InputStream)(_source.getObject()),(java.io.OutputStream)(_out.getObject()));
- //BA.debugLineNum = 136;BA.debugLine="out.Close";
+RDebugUtils.currentLine=458767;
+ //BA.debugLineNum = 458767;BA.debugLine="out.Close";
 _out.Close();
- //BA.debugLineNum = 137;BA.debugLine="MsgboxAsync(\"File \" & Title & \" was saved succes";
+RDebugUtils.currentLine=458768;
+ //BA.debugLineNum = 458768;BA.debugLine="MsgboxAsync(\"File \" & Title & \" was saved succes";
 anywheresoftware.b4a.keywords.Common.MsgboxAsync(BA.ObjectToCharSequence("File "+_title+" was saved successfully"),BA.ObjectToCharSequence("Write File Success"),processBA);
- //BA.debugLineNum = 138;BA.debugLine="Return True";
+RDebugUtils.currentLine=458769;
+ //BA.debugLineNum = 458769;BA.debugLine="Return True";
 if (true) {
 anywheresoftware.b4a.keywords.Common.ReturnFromResumableSub(this,(Object)(anywheresoftware.b4a.keywords.Common.True));return;};
  if (true) break;
@@ -829,94 +741,305 @@ case 4:
 //C
 this.state = -1;
 ;
- //BA.debugLineNum = 140;BA.debugLine="Return False";
+RDebugUtils.currentLine=458771;
+ //BA.debugLineNum = 458771;BA.debugLine="Return False";
 if (true) {
 anywheresoftware.b4a.keywords.Common.ReturnFromResumableSub(this,(Object)(anywheresoftware.b4a.keywords.Common.False));return;};
- //BA.debugLineNum = 141;BA.debugLine="End Sub";
+RDebugUtils.currentLine=458772;
+ //BA.debugLineNum = 458772;BA.debugLine="End Sub";
 if (true) break;
 
             }
         }
     }
 }
-public static void  _ion_event(String _methodname,Object[] _args) throws Exception{
+public static Object  _getba() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "getba", false))
+	 {return ((Object) Debug.delegate(mostCurrent.activityBA, "getba", null));}
+anywheresoftware.b4j.object.JavaObject _jo = null;
+String _cls = "";
+RDebugUtils.currentLine=589824;
+ //BA.debugLineNum = 589824;BA.debugLine="Sub GetBA As Object";
+RDebugUtils.currentLine=589825;
+ //BA.debugLineNum = 589825;BA.debugLine="Dim jo As JavaObject";
+_jo = new anywheresoftware.b4j.object.JavaObject();
+RDebugUtils.currentLine=589826;
+ //BA.debugLineNum = 589826;BA.debugLine="Dim cls As String = Me";
+_cls = BA.ObjectToString(main.getObject());
+RDebugUtils.currentLine=589827;
+ //BA.debugLineNum = 589827;BA.debugLine="cls = cls.SubString(\"class \".Length)";
+_cls = _cls.substring("class ".length());
+RDebugUtils.currentLine=589828;
+ //BA.debugLineNum = 589828;BA.debugLine="jo.InitializeStatic(cls)";
+_jo.InitializeStatic(_cls);
+RDebugUtils.currentLine=589829;
+ //BA.debugLineNum = 589829;BA.debugLine="Return jo.GetField(\"processBA\")";
+if (true) return _jo.GetField("processBA");
+RDebugUtils.currentLine=589830;
+ //BA.debugLineNum = 589830;BA.debugLine="End Sub";
+return null;
+}
+public static void  _imageview1_click() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "imageview1_click", false))
+	 {Debug.delegate(mostCurrent.activityBA, "imageview1_click", null); return;}
+ResumableSub_ImageView1_Click rsub = new ResumableSub_ImageView1_Click(null);
+rsub.resume(processBA, null);
+}
+public static class ResumableSub_ImageView1_Click extends BA.ResumableSub {
+public ResumableSub_ImageView1_Click(zebra.companion.scanner.main parent) {
+this.parent = parent;
+}
+zebra.companion.scanner.main parent;
+int _result = 0;
+String _strfilename = "";
+boolean _success = false;
+
+@Override
+public void resume(BA ba, Object[] result) throws Exception{
+RDebugUtils.currentModule="main";
+
+    while (true) {
+        switch (state) {
+            case -1:
+return;
+
+case 0:
+//C
+this.state = 1;
+RDebugUtils.currentLine=851969;
+ //BA.debugLineNum = 851969;BA.debugLine="MsgboxAsync(\"Copy DataWedge profile to a location";
+anywheresoftware.b4a.keywords.Common.MsgboxAsync(BA.ObjectToCharSequence("Copy DataWedge profile to a location such as the downloads directory. Then import profile into DataWedge."),BA.ObjectToCharSequence("DataWedge Profile"),processBA);
+RDebugUtils.currentLine=851970;
+ //BA.debugLineNum = 851970;BA.debugLine="Wait For MsgBox_Result (Result As Int)";
+anywheresoftware.b4a.keywords.Common.WaitFor("msgbox_result", processBA, new anywheresoftware.b4a.shell.DebugResumableSub.DelegatableResumableSub(this, "main", "imageview1_click"), null);
+this.state = 5;
+return;
+case 5:
+//C
+this.state = 1;
+_result = (Integer) result[0];
+;
+RDebugUtils.currentLine=851971;
+ //BA.debugLineNum = 851971;BA.debugLine="Dim strFileName As String = \"dwprofile_ZebraCompa";
+_strfilename = "dwprofile_ZebraCompanionScanner_DW6.db";
+RDebugUtils.currentLine=851972;
+ //BA.debugLineNum = 851972;BA.debugLine="Wait For (SaveAs(File.OpenInput(File.DirAssets,st";
+anywheresoftware.b4a.keywords.Common.WaitFor("complete", processBA, new anywheresoftware.b4a.shell.DebugResumableSub.DelegatableResumableSub(this, "main", "imageview1_click"), _saveas(anywheresoftware.b4a.keywords.Common.File.OpenInput(anywheresoftware.b4a.keywords.Common.File.getDirAssets(),_strfilename),"application/x-sqlite3",_strfilename));
+this.state = 6;
+return;
+case 6:
+//C
+this.state = 1;
+_success = (Boolean) result[0];
+;
+RDebugUtils.currentLine=851973;
+ //BA.debugLineNum = 851973;BA.debugLine="Log(\"File saved successfully? \" & Success)";
+anywheresoftware.b4a.keywords.Common.LogImpl("2851973","File saved successfully? "+BA.ObjectToString(_success),0);
+RDebugUtils.currentLine=851974;
+ //BA.debugLineNum = 851974;BA.debugLine="If Success = False Then";
+if (true) break;
+
+case 1:
+//if
+this.state = 4;
+if (_success==anywheresoftware.b4a.keywords.Common.False) { 
+this.state = 3;
+}if (true) break;
+
+case 3:
+//C
+this.state = 4;
+RDebugUtils.currentLine=851975;
+ //BA.debugLineNum = 851975;BA.debugLine="MsgboxAsync(\"File did not save.  Try again\", \"Wr";
+anywheresoftware.b4a.keywords.Common.MsgboxAsync(BA.ObjectToCharSequence("File did not save.  Try again"),BA.ObjectToCharSequence("Write File Error"),processBA);
+ if (true) break;
+
+case 4:
+//C
+this.state = -1;
+;
+RDebugUtils.currentLine=851977;
+ //BA.debugLineNum = 851977;BA.debugLine="End Sub";
+if (true) break;
+
+            }
+        }
+    }
+}
+public static String  _processscan(String _s) throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "processscan", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "processscan", new Object[] {_s}));}
+anywheresoftware.b4a.objects.streams.File.TextWriterWrapper _writer = null;
+RDebugUtils.currentLine=327680;
+ //BA.debugLineNum = 327680;BA.debugLine="Sub ProcessScan (s As String)";
+RDebugUtils.currentLine=327681;
+ //BA.debugLineNum = 327681;BA.debugLine="Log(s)";
+anywheresoftware.b4a.keywords.Common.LogImpl("2327681",_s,0);
+RDebugUtils.currentLine=327682;
+ //BA.debugLineNum = 327682;BA.debugLine="label_scanResult.Text = s.Replace(\",\",CRLF)";
+mostCurrent._label_scanresult.setText(BA.ObjectToCharSequence(_s.replace(",",anywheresoftware.b4a.keywords.Common.CRLF)));
+RDebugUtils.currentLine=327683;
+ //BA.debugLineNum = 327683;BA.debugLine="Dim Writer As TextWriter";
+_writer = new anywheresoftware.b4a.objects.streams.File.TextWriterWrapper();
+RDebugUtils.currentLine=327684;
+ //BA.debugLineNum = 327684;BA.debugLine="If File.Exists(File.DirInternal,\"SCANS.tmp\") = Fa";
+if (anywheresoftware.b4a.keywords.Common.File.Exists(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp")==anywheresoftware.b4a.keywords.Common.False) { 
+RDebugUtils.currentLine=327685;
+ //BA.debugLineNum = 327685;BA.debugLine="Writer.Initialize(File.OpenOutput(File.DirIntern";
+_writer.Initialize((java.io.OutputStream)(anywheresoftware.b4a.keywords.Common.File.OpenOutput(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp",anywheresoftware.b4a.keywords.Common.True).getObject()));
+RDebugUtils.currentLine=327686;
+ //BA.debugLineNum = 327686;BA.debugLine="Writer.WriteLine(Chr(34) & \"Date/Time\" & Chr(34)";
+_writer.WriteLine(BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+"Date/Time"+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+","+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+"Symbology"+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+","+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34)))+"Value"+BA.ObjectToString(anywheresoftware.b4a.keywords.Common.Chr((int) (34))));
+RDebugUtils.currentLine=327687;
+ //BA.debugLineNum = 327687;BA.debugLine="Writer.WriteLine(s)";
+_writer.WriteLine(_s);
+RDebugUtils.currentLine=327688;
+ //BA.debugLineNum = 327688;BA.debugLine="Writer.Close";
+_writer.Close();
+ }else {
+RDebugUtils.currentLine=327690;
+ //BA.debugLineNum = 327690;BA.debugLine="Writer.Initialize(File.OpenOutput(File.DirIntern";
+_writer.Initialize((java.io.OutputStream)(anywheresoftware.b4a.keywords.Common.File.OpenOutput(anywheresoftware.b4a.keywords.Common.File.getDirInternal(),"SCANS.tmp",anywheresoftware.b4a.keywords.Common.True).getObject()));
+RDebugUtils.currentLine=327691;
+ //BA.debugLineNum = 327691;BA.debugLine="Writer.WriteLine(s)";
+_writer.WriteLine(_s);
+RDebugUtils.currentLine=327692;
+ //BA.debugLineNum = 327692;BA.debugLine="Writer.Close";
+_writer.Close();
+ };
+RDebugUtils.currentLine=327694;
+ //BA.debugLineNum = 327694;BA.debugLine="FindViewByTag(Activity,\"AppSave\").Enabled = True";
+_findviewbytag((anywheresoftware.b4a.objects.PanelWrapper) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4a.objects.PanelWrapper(), (android.view.ViewGroup)(mostCurrent._activity.getObject())),"AppSave").setEnabled(anywheresoftware.b4a.keywords.Common.True);
+RDebugUtils.currentLine=327695;
+ //BA.debugLineNum = 327695;BA.debugLine="End Sub";
+return "";
+}
+public static String  _startactivityforresult(anywheresoftware.b4a.objects.IntentWrapper _i) throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "startactivityforresult", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "startactivityforresult", new Object[] {_i}));}
+anywheresoftware.b4j.object.JavaObject _jo = null;
+Object _ion = null;
+RDebugUtils.currentLine=524288;
+ //BA.debugLineNum = 524288;BA.debugLine="Sub StartActivityForResult(i As Intent)";
+RDebugUtils.currentLine=524289;
+ //BA.debugLineNum = 524289;BA.debugLine="Dim jo As JavaObject = GetBA";
+_jo = new anywheresoftware.b4j.object.JavaObject();
+_jo = (anywheresoftware.b4j.object.JavaObject) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4j.object.JavaObject(), (java.lang.Object)(_getba()));
+RDebugUtils.currentLine=524290;
+ //BA.debugLineNum = 524290;BA.debugLine="Dim ion As Object";
+_ion = new Object();
+RDebugUtils.currentLine=524291;
+ //BA.debugLineNum = 524291;BA.debugLine="ion = jo.CreateEvent(\"anywheresoftware.b4a.IOnAct";
+_ion = _jo.CreateEvent(processBA,"anywheresoftware.b4a.IOnActivityResult","ion",anywheresoftware.b4a.keywords.Common.Null);
+RDebugUtils.currentLine=524292;
+ //BA.debugLineNum = 524292;BA.debugLine="jo.RunMethod(\"startActivityForResult\", Array(ion,";
+_jo.RunMethod("startActivityForResult",new Object[]{_ion,(Object)(_i.getObject())});
+RDebugUtils.currentLine=524293;
+ //BA.debugLineNum = 524293;BA.debugLine="End Sub";
+return "";
 }
 public static String  _scanadd() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "scanadd", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "scanadd", null));}
 String _softscantrigger = "";
 String _extradata = "";
 anywheresoftware.b4j.object.JavaObject _jobj = null;
 anywheresoftware.b4a.objects.IntentWrapper _iobj = null;
- //BA.debugLineNum = 158;BA.debugLine="Sub ScanAdd";
- //BA.debugLineNum = 159;BA.debugLine="Dim softScanTrigger As String = \"com.symbol.dataw";
+RDebugUtils.currentLine=655360;
+ //BA.debugLineNum = 655360;BA.debugLine="Sub ScanAdd";
+RDebugUtils.currentLine=655361;
+ //BA.debugLineNum = 655361;BA.debugLine="Dim softScanTrigger As String = \"com.symbol.dataw";
 _softscantrigger = "com.symbol.datawedge.api.ACTION";
- //BA.debugLineNum = 160;BA.debugLine="Dim extraData As String = \"com.symbol.datawedge.a";
+RDebugUtils.currentLine=655362;
+ //BA.debugLineNum = 655362;BA.debugLine="Dim extraData As String = \"com.symbol.datawedge.a";
 _extradata = "com.symbol.datawedge.api.SOFT_SCAN_TRIGGER";
- //BA.debugLineNum = 161;BA.debugLine="Dim jObj As JavaObject";
+RDebugUtils.currentLine=655363;
+ //BA.debugLineNum = 655363;BA.debugLine="Dim jObj As JavaObject";
 _jobj = new anywheresoftware.b4j.object.JavaObject();
- //BA.debugLineNum = 162;BA.debugLine="jObj.InitializeContext";
+RDebugUtils.currentLine=655364;
+ //BA.debugLineNum = 655364;BA.debugLine="jObj.InitializeContext";
 _jobj.InitializeContext(processBA);
- //BA.debugLineNum = 163;BA.debugLine="Dim iObj As Intent";
+RDebugUtils.currentLine=655365;
+ //BA.debugLineNum = 655365;BA.debugLine="Dim iObj As Intent";
 _iobj = new anywheresoftware.b4a.objects.IntentWrapper();
- //BA.debugLineNum = 164;BA.debugLine="iObj.Initialize(softScanTrigger,\"\")";
+RDebugUtils.currentLine=655366;
+ //BA.debugLineNum = 655366;BA.debugLine="iObj.Initialize(softScanTrigger,\"\")";
 _iobj.Initialize(_softscantrigger,"");
- //BA.debugLineNum = 165;BA.debugLine="iObj.PutExtra(extraData, \"START_SCANNING\")";
+RDebugUtils.currentLine=655367;
+ //BA.debugLineNum = 655367;BA.debugLine="iObj.PutExtra(extraData, \"START_SCANNING\")";
 _iobj.PutExtra(_extradata,(Object)("START_SCANNING"));
- //BA.debugLineNum = 166;BA.debugLine="jObj.RunMethod(\"sendBroadcast\", Array(iObj))";
+RDebugUtils.currentLine=655368;
+ //BA.debugLineNum = 655368;BA.debugLine="jObj.RunMethod(\"sendBroadcast\", Array(iObj))";
 _jobj.RunMethod("sendBroadcast",new Object[]{(Object)(_iobj.getObject())});
- //BA.debugLineNum = 167;BA.debugLine="Log(\"Broadcast Sent\")";
-anywheresoftware.b4a.keywords.Common.LogImpl("11966089","Broadcast Sent",0);
- //BA.debugLineNum = 168;BA.debugLine="End Sub";
+RDebugUtils.currentLine=655369;
+ //BA.debugLineNum = 655369;BA.debugLine="Log(\"Broadcast Sent\")";
+anywheresoftware.b4a.keywords.Common.LogImpl("2655369","Broadcast Sent",0);
+RDebugUtils.currentLine=655370;
+ //BA.debugLineNum = 655370;BA.debugLine="End Sub";
 return "";
 }
 public static String  _scanadd_click() throws Exception{
- //BA.debugLineNum = 170;BA.debugLine="Sub ScanAdd_Click";
- //BA.debugLineNum = 171;BA.debugLine="Log(\"Short Click\")";
-anywheresoftware.b4a.keywords.Common.LogImpl("1655361","Short Click",0);
- //BA.debugLineNum = 172;BA.debugLine="CallSub(Me, ScanAdd)";
-anywheresoftware.b4a.keywords.Common.CallSubNew(processBA,main.getObject(),_scanadd());
- //BA.debugLineNum = 173;BA.debugLine="End Sub";
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "scanadd_click", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "scanadd_click", null));}
+RDebugUtils.currentLine=720896;
+ //BA.debugLineNum = 720896;BA.debugLine="Sub ScanAdd_Click";
+RDebugUtils.currentLine=720897;
+ //BA.debugLineNum = 720897;BA.debugLine="Log(\"Short Click\")";
+anywheresoftware.b4a.keywords.Common.LogImpl("2720897","Short Click",0);
+RDebugUtils.currentLine=720898;
+ //BA.debugLineNum = 720898;BA.debugLine="CallSub(Me, ScanAdd)";
+anywheresoftware.b4a.keywords.Common.CallSubDebug(processBA,main.getObject(),_scanadd());
+RDebugUtils.currentLine=720899;
+ //BA.debugLineNum = 720899;BA.debugLine="End Sub";
 return "";
 }
 public static String  _scanadd_longclick() throws Exception{
- //BA.debugLineNum = 175;BA.debugLine="Private Sub ScanAdd_LongClick";
- //BA.debugLineNum = 176;BA.debugLine="Log(\"Long Click\")";
-anywheresoftware.b4a.keywords.Common.LogImpl("1851969","Long Click",0);
- //BA.debugLineNum = 177;BA.debugLine="CallSub(Me, ScanAdd)";
-anywheresoftware.b4a.keywords.Common.CallSubNew(processBA,main.getObject(),_scanadd());
- //BA.debugLineNum = 178;BA.debugLine="End Sub";
-return "";
-}
-public static String  _vvv4(anywheresoftware.b4a.objects.IntentWrapper _i) throws Exception{
-anywheresoftware.b4j.object.JavaObject _jo = null;
-Object _ion = null;
- //BA.debugLineNum = 143;BA.debugLine="Sub StartActivityForResult(i As Intent)";
- //BA.debugLineNum = 144;BA.debugLine="Dim jo As JavaObject = GetBA";
-_jo = new anywheresoftware.b4j.object.JavaObject();
-_jo = (anywheresoftware.b4j.object.JavaObject) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4j.object.JavaObject(), (java.lang.Object)(_vvv3()));
- //BA.debugLineNum = 145;BA.debugLine="Dim ion As Object";
-_ion = new Object();
- //BA.debugLineNum = 146;BA.debugLine="ion = jo.CreateEvent(\"anywheresoftware.b4a.IOnAct";
-_ion = _jo.CreateEvent(processBA,"anywheresoftware.b4a.IOnActivityResult","ion",anywheresoftware.b4a.keywords.Common.Null);
- //BA.debugLineNum = 147;BA.debugLine="jo.RunMethod(\"startActivityForResult\", Array(ion,";
-_jo.RunMethod("startActivityForResult",new Object[]{_ion,(Object)(_i.getObject())});
- //BA.debugLineNum = 148;BA.debugLine="End Sub";
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "scanadd_longclick", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "scanadd_longclick", null));}
+RDebugUtils.currentLine=786432;
+ //BA.debugLineNum = 786432;BA.debugLine="Private Sub ScanAdd_LongClick";
+RDebugUtils.currentLine=786433;
+ //BA.debugLineNum = 786433;BA.debugLine="Log(\"Long Click\")";
+anywheresoftware.b4a.keywords.Common.LogImpl("2786433","Long Click",0);
+RDebugUtils.currentLine=786434;
+ //BA.debugLineNum = 786434;BA.debugLine="CallSub(Me, ScanAdd)";
+anywheresoftware.b4a.keywords.Common.CallSubDebug(processBA,main.getObject(),_scanadd());
+RDebugUtils.currentLine=786435;
+ //BA.debugLineNum = 786435;BA.debugLine="End Sub";
 return "";
 }
 public static String  _t_tick() throws Exception{
- //BA.debugLineNum = 191;BA.debugLine="Sub t_tick";
- //BA.debugLineNum = 192;BA.debugLine="batterystatus = bu.BatteryInformation";
-_vv0 = mostCurrent._vv7._getvv2 /*int[]*/ ();
- //BA.debugLineNum = 193;BA.debugLine="bv1.Level = batterystatus(0)";
-mostCurrent._bv1.setLevel(_vv0[(int) (0)]);
- //BA.debugLineNum = 194;BA.debugLine="If batterystatus(8) = 1 Then";
-if (_vv0[(int) (8)]==1) { 
- //BA.debugLineNum = 195;BA.debugLine="bv1.Charging = True";
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "t_tick", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "t_tick", null));}
+RDebugUtils.currentLine=917504;
+ //BA.debugLineNum = 917504;BA.debugLine="Sub t_tick";
+RDebugUtils.currentLine=917505;
+ //BA.debugLineNum = 917505;BA.debugLine="batterystatus = bu.BatteryInformation";
+_batterystatus = mostCurrent._bu._getbatteryinformation /*int[]*/ (null);
+RDebugUtils.currentLine=917506;
+ //BA.debugLineNum = 917506;BA.debugLine="bv1.Level = batterystatus(0)";
+mostCurrent._bv1.setLevel(_batterystatus[(int) (0)]);
+RDebugUtils.currentLine=917507;
+ //BA.debugLineNum = 917507;BA.debugLine="If batterystatus(8) = 1 Then";
+if (_batterystatus[(int) (8)]==1) { 
+RDebugUtils.currentLine=917508;
+ //BA.debugLineNum = 917508;BA.debugLine="bv1.Charging = True";
 mostCurrent._bv1.setCharging(anywheresoftware.b4a.keywords.Common.True);
  }else {
- //BA.debugLineNum = 197;BA.debugLine="bv1.Charging = False";
+RDebugUtils.currentLine=917510;
+ //BA.debugLineNum = 917510;BA.debugLine="bv1.Charging = False";
 mostCurrent._bv1.setCharging(anywheresoftware.b4a.keywords.Common.False);
  };
- //BA.debugLineNum = 199;BA.debugLine="End Sub";
+RDebugUtils.currentLine=917512;
+ //BA.debugLineNum = 917512;BA.debugLine="End Sub";
 return "";
 }
 }

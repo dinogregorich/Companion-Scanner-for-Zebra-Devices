@@ -17,7 +17,7 @@ public class batteryutilities extends B4AClass.ImplB4AClass implements BA.SubDel
     private static java.util.HashMap<String, java.lang.reflect.Method> htSubs;
     private void innerInitialize(BA _ba) throws Exception {
         if (ba == null) {
-            ba = new BA(_ba, this, htSubs, "zebra.companion.scanner.batteryutilities");
+            ba = new anywheresoftware.b4a.ShellBA(_ba, this, htSubs, "zebra.companion.scanner.batteryutilities");
             if (htSubs == null) {
                 ba.loadHtSubs(this.getClass());
                 htSubs = ba.htSubs;
@@ -30,42 +30,66 @@ public class batteryutilities extends B4AClass.ImplB4AClass implements BA.SubDel
             ba.raiseEvent2(null, true, "class_globals", false);
     }
 
- public anywheresoftware.b4a.keywords.Common __c = null;
-public anywheresoftware.b4j.object.JavaObject _vv3 = null;
-public zebra.companion.scanner.main _vv4 = null;
-public zebra.companion.scanner.starter _vv5 = null;
-public zebra.companion.scanner.scanner _vv6 = null;
-public String  _class_globals() throws Exception{
- //BA.debugLineNum = 2;BA.debugLine="Sub Class_Globals";
- //BA.debugLineNum = 3;BA.debugLine="Private nativeMe As JavaObject";
-_vv3 = new anywheresoftware.b4j.object.JavaObject();
- //BA.debugLineNum = 5;BA.debugLine="End Sub";
+ 
+    public void  innerInitializeHelper(anywheresoftware.b4a.BA _ba) throws Exception{
+        innerInitialize(_ba);
+    }
+    public Object callSub(String sub, Object sender, Object[] args) throws Exception {
+        return BA.SubDelegator.SubNotFound;
+    }
+public anywheresoftware.b4a.keywords.Common __c = null;
+public anywheresoftware.b4j.object.JavaObject _nativeme = null;
+public zebra.companion.scanner.main _main = null;
+public zebra.companion.scanner.starter _starter = null;
+public zebra.companion.scanner.scanner _scanner = null;
+public String  _initialize(zebra.companion.scanner.batteryutilities __ref,anywheresoftware.b4a.BA _ba) throws Exception{
+__ref = this;
+innerInitialize(_ba);
+RDebugUtils.currentModule="batteryutilities";
+if (Debug.shouldDelegate(ba, "initialize", false))
+	 {return ((String) Debug.delegate(ba, "initialize", new Object[] {_ba}));}
+RDebugUtils.currentLine=1835008;
+ //BA.debugLineNum = 1835008;BA.debugLine="Public Sub Initialize";
+RDebugUtils.currentLine=1835009;
+ //BA.debugLineNum = 1835009;BA.debugLine="nativeMe = Me";
+__ref._nativeme /*anywheresoftware.b4j.object.JavaObject*/  = (anywheresoftware.b4j.object.JavaObject) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4j.object.JavaObject(), (java.lang.Object)(this));
+RDebugUtils.currentLine=1835010;
+ //BA.debugLineNum = 1835010;BA.debugLine="End Sub";
 return "";
 }
-public int[]  _getvv2() throws Exception{
+public int[]  _getbatteryinformation(zebra.companion.scanner.batteryutilities __ref) throws Exception{
+__ref = this;
+RDebugUtils.currentModule="batteryutilities";
+if (Debug.shouldDelegate(ba, "getbatteryinformation", false))
+	 {return ((int[]) Debug.delegate(ba, "getbatteryinformation", null));}
 int[] _batteryinfo = null;
- //BA.debugLineNum = 22;BA.debugLine="Public Sub getBatteryInformation () As Int()";
- //BA.debugLineNum = 25;BA.debugLine="Dim batteryInfo(11)  As Int";
+RDebugUtils.currentLine=1900544;
+ //BA.debugLineNum = 1900544;BA.debugLine="Public Sub getBatteryInformation () As Int()";
+RDebugUtils.currentLine=1900547;
+ //BA.debugLineNum = 1900547;BA.debugLine="Dim batteryInfo(11)  As Int";
 _batteryinfo = new int[(int) (11)];
 ;
- //BA.debugLineNum = 26;BA.debugLine="batteryInfo = nativeMe.RunMethod(\"getBatteryInfor";
-_batteryinfo = (int[])(_vv3.RunMethod("getBatteryInformation",(Object[])(__c.Null)));
- //BA.debugLineNum = 27;BA.debugLine="Return batteryInfo";
+RDebugUtils.currentLine=1900548;
+ //BA.debugLineNum = 1900548;BA.debugLine="batteryInfo = nativeMe.RunMethod(\"getBatteryInfor";
+_batteryinfo = (int[])(__ref._nativeme /*anywheresoftware.b4j.object.JavaObject*/ .RunMethod("getBatteryInformation",(Object[])(__c.Null)));
+RDebugUtils.currentLine=1900549;
+ //BA.debugLineNum = 1900549;BA.debugLine="Return batteryInfo";
 if (true) return _batteryinfo;
- //BA.debugLineNum = 29;BA.debugLine="End Sub";
+RDebugUtils.currentLine=1900551;
+ //BA.debugLineNum = 1900551;BA.debugLine="End Sub";
 return null;
 }
-public String  _initialize(anywheresoftware.b4a.BA _ba) throws Exception{
-innerInitialize(_ba);
- //BA.debugLineNum = 7;BA.debugLine="Public Sub Initialize";
- //BA.debugLineNum = 8;BA.debugLine="nativeMe = Me";
-_vv3 = (anywheresoftware.b4j.object.JavaObject) anywheresoftware.b4a.AbsObjectWrapper.ConvertToWrapper(new anywheresoftware.b4j.object.JavaObject(), (java.lang.Object)(this));
- //BA.debugLineNum = 9;BA.debugLine="End Sub";
+public String  _class_globals(zebra.companion.scanner.batteryutilities __ref) throws Exception{
+__ref = this;
+RDebugUtils.currentModule="batteryutilities";
+RDebugUtils.currentLine=1769472;
+ //BA.debugLineNum = 1769472;BA.debugLine="Sub Class_Globals";
+RDebugUtils.currentLine=1769473;
+ //BA.debugLineNum = 1769473;BA.debugLine="Private nativeMe As JavaObject";
+_nativeme = new anywheresoftware.b4j.object.JavaObject();
+RDebugUtils.currentLine=1769475;
+ //BA.debugLineNum = 1769475;BA.debugLine="End Sub";
 return "";
-}
-public Object callSub(String sub, Object sender, Object[] args) throws Exception {
-BA.senderHolder.set(sender);
-return BA.SubDelegator.SubNotFound;
 }
 
 

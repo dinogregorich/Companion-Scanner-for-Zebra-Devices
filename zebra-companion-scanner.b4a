@@ -14,7 +14,7 @@ Library3=core
 Library4=javaobject
 Library5=reflection
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>~\n~<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="23"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~'End of default text.~\n~
-Module1=|relative|..\BatteryUtilities
+Module1=BatteryUtilities
 Module2=scanner
 Module3=Starter
 NumberOfFiles=4
