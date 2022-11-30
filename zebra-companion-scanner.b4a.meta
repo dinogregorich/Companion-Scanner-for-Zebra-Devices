@@ -1,0 +1,15 @@
+﻿ModuleBookmarks0=
+ModuleBookmarks1=
+ModuleBookmarks2=
+ModuleBookmarks3=
+ModuleBreakpoints0=
+ModuleBreakpoints1=
+ModuleBreakpoints2=
+ModuleBreakpoints3=
+ModuleClosedNodes0=
+ModuleClosedNodes1=
+ModuleClosedNodes2=
+ModuleClosedNodes3=
+NavigationStack=Main,ScanAdd_LongClick,176,6,Main,ScanAdd_Click,172,6,Main,ScanAdd,166,0,Main,t_tick,193,0,Main,Activity_Resume,74,0,scanner,Service_Create,22,0,scanner,Service_Destroy,43,0,scanner,BC_OnReceive,55,0,BatteryUtilities,getBatteryInformation,29,0,Main,Activity_Create,66,6
+SelectedBuild=0
+VisibleModules=3,2,1

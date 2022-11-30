@@ -1,0 +1,17 @@
+This file maps the renamed variables to the original ones.
+v5=bc
+v6=structure
+v7=data
+v0=t
+vv1=getbatteryinformation
+vv2=batteryinformation
+vv3=nativeme
+vv4=main
+vv5=starter
+vv6=scanner
+vv7=bu
+vv0=batterystatus
+vvv1=findviewbytag
+vvv2=saveas
+vvv3=getba
+vvv4=startactivityforresult

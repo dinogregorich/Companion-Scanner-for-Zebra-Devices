@@ -1,0 +1,230 @@
+﻿Build1=Default,zebra.companion.scanner
+File1=dwprofile_ZebraCompanionScanner_DW6.db
+File2=main_normal.bal
+File3=main_small.bal
+File4=zebratransparent.png
+FileGroup1=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+Group=Default Group
+Library1=batteryview
+Library2=broadcastreceiver
+Library3=core
+Library4=javaobject
+Library5=reflection
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>~\n~<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="23"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~'End of default text.~\n~
+Module1=|relative|..\BatteryUtilities
+Module2=scanner
+Module3=Starter
+NumberOfFiles=4
+NumberOfLibraries=5
+NumberOfModules=3
+Version=12
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Zebra Companion Scanner
+	#VersionCode: 1
+	#VersionName: zcs
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: True
+	#IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+	Dim t As Timer
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	'These variables can only be accessed from this module.
+	Private bv1 As BatteryView
+	Private bu As BatteryUtilities
+	Dim batterystatus(11) As Int
+	Private label_scanResult As Label
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	Dim r As Reflector
+	r.Target = r.GetContext
+	r.Target = r.RunMethod("getResources")
+	r.Target = r.RunMethod("getDisplayMetrics")
+	'Log(r.GetField("xdpi"))
+	'Log(r.GetField("ydpi"))
+	'Log(GetDeviceLayoutValues.Width/r.GetField("xdpi"))
+	'Log(GetDeviceLayoutValues.Height/r.GetField("ydpi"))
+	'Log(GetDeviceLayoutValues.Scale)
+	
+	'Dim manu As String
+	'Dim modl As String
+	'Dim prod As String
+	'Dim phone1 As Phone
+	'manu = phone1.Manufacturer
+	'modl = phone1.Model
+	'prod = phone1.Product
+	'Log(manu & " - " & modl & " - " & prod)
+	
+	Activity.Height = 110%y
+	'Load the right sized UX main
+	If GetDeviceLayoutValues.Width/r.GetField("xdpi") < 2 Then
+		Activity.LoadLayout("main_small")
+	Else
+		Activity.LoadLayout("main_normal")
+	End If
+	
+	bu.Initialize
+	batterystatus = bu.BatteryInformation
+	bv1.Level = batterystatus(0)
+	If batterystatus(8) = 1 Then 
+		bv1.Charging = True
+	Else
+		bv1.Charging = False	
+	End If
+	t.Initialize("t", 20000)
+End Sub
+
+Sub Activity_Resume
+	Try
+		Dim jo As JavaObject = Activity
+		jo.RunMethod("setSystemUiVisibility", Array As Object(5894)) '3846 - non-sticky <-> 5894
+	Catch
+		'Log(LastException) 'This can cause another error
+	End Try 'ignore
+	Dim strMsg As String = "Press Scan Button(s) To Begin." & CRLF & CRLF & "When finished, tap 'Save' to save the captured scans to a directory."
+	strMsg = strMsg & CRLF & CRLF & "A confirmation message will appear when successfully saved."
+	label_scanResult.Text = strMsg
+	label_scanResult.TextColor = Colors.ARGB(255, 22, 22, 22)
+	t.Enabled = True
+	If File.Exists(File.DirInternal,"SCANS.tmp") = True Then
+		FindViewByTag(Activity,"AppSave").Enabled = True
+	End If
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	t.Enabled = False
+End Sub
+
+Sub ProcessScan (s As String)
+	Log(s)
+	label_scanResult.Text = s.Replace(",",CRLF)
+	Dim Writer As TextWriter
+	If File.Exists(File.DirInternal,"SCANS.tmp") = False Then
+		Writer.Initialize(File.OpenOutput(File.DirInternal,"SCANS.tmp",True))
+		Writer.WriteLine(Chr(34) & "Date/Time" & Chr(34) & "," & Chr(34) & "Symbology"& Chr(34) & "," & Chr(34) & "Value"& Chr(34))
+		Writer.WriteLine(s)
+		Writer.Close
+	Else
+		Writer.Initialize(File.OpenOutput(File.DirInternal,"SCANS.tmp",True))
+		Writer.WriteLine(s)
+		Writer.Close
+	End If
+	FindViewByTag(Activity,"AppSave").Enabled = True  'We captured at least 1 scan, enable the Save CSV button
+End Sub
+
+Private Sub ButtonSave_Click
+	DateTime.DateFormat="yyMMdd-HHmmss"
+	Dim strFileName As String = "scans_" & DateTime.Date(DateTime.now) & ".csv"
+	Wait For (SaveAs(File.OpenInput(File.DirInternal,"SCANS.tmp"), "application/octet-stream", strFileName)) Complete (Success As Boolean)
+	Log("File saved successfully? " & Success)
+	If Success = True Then
+		File.Delete(File.DirInternal,"SCANS.tmp")
+		FindViewByTag(Activity,"AppSave").Enabled = False 'Since we saved all the scans and deleted the file, we have no more, we disable the Save CSV button
+	Else
+		MsgboxAsync("File did not save.  Try again", "Write File Error")
+	End If
+End Sub
+
+Sub SaveAs (Source As InputStream, MimeType As String, Title As String) As ResumableSub
+	Dim intent As Intent
+	intent.Initialize("android.intent.action.CREATE_DOCUMENT", "")
+	intent.AddCategory("android.intent.category.OPENABLE")
+	intent.PutExtra("android.intent.extra.TITLE", Title)
+	intent.SetType(MimeType)
+	StartActivityForResult(intent)
+	Wait For ion_Event (MethodName As String, Args() As Object)
+	If -1 = Args(0) Then
+		' resultCode = RESULT_OK
+		Dim result As Intent = Args(1)
+		Dim jo As JavaObject = result
+		Dim ctxt As JavaObject
+		Dim out As OutputStream = ctxt.InitializeContext.RunMethodJO("getContentResolver", Null).RunMethod("openOutputStream", Array(jo.RunMethod("getData", Null)))
+		File.Copy2(Source, out)
+		out.Close
+		MsgboxAsync("File " & Title & " was saved successfully", "Write File Success")
+		Return True
+	End If
+	Return False
+End Sub
+
+Sub StartActivityForResult(i As Intent)
+	Dim jo As JavaObject = GetBA
+	Dim ion As Object
+	ion = jo.CreateEvent("anywheresoftware.b4a.IOnActivityResult", "ion", Null)
+	jo.RunMethod("startActivityForResult", Array(ion, i))
+End Sub
+
+Sub GetBA As Object
+	Dim jo As JavaObject
+	Dim cls As String = Me
+	cls = cls.SubString("class ".Length)
+	jo.InitializeStatic(cls)
+	Return jo.GetField("processBA")
+End Sub
+
+Sub ScanAdd
+	Dim softScanTrigger As String = "com.symbol.datawedge.api.ACTION"
+	Dim extraData As String = "com.symbol.datawedge.api.SOFT_SCAN_TRIGGER"
+	Dim jObj As JavaObject
+	jObj.InitializeContext
+	Dim iObj As Intent
+	iObj.Initialize(softScanTrigger,"")
+	iObj.PutExtra(extraData, "START_SCANNING")
+	jObj.RunMethod("sendBroadcast", Array(iObj))
+	Log("Broadcast Sent")
+End Sub
+
+Sub ScanAdd_Click
+	Log("Short Click")
+	CallSub(Me, ScanAdd)
+End Sub
+
+Private Sub ScanAdd_LongClick
+	Log("Long Click")
+	CallSub(Me, ScanAdd)
+End Sub
+
+Private Sub ImageView1_Click
+	MsgboxAsync("Copy DataWedge profile to a location such as the downloads directory. Then import profile into DataWedge.","DataWedge Profile")
+	Wait For MsgBox_Result (Result As Int)
+	Dim strFileName As String = "dwprofile_ZebraCompanionScanner_DW6.db"
+	Wait For (SaveAs(File.OpenInput(File.DirAssets,strFileName), "application/x-sqlite3", strFileName)) Complete (Success As Boolean)
+	Log("File saved successfully? " & Success)
+	If Success = False Then
+		MsgboxAsync("File did not save.  Try again", "Write File Error")
+	End If
+End Sub
+
+Sub t_tick
+	batterystatus = bu.BatteryInformation
+	bv1.Level = batterystatus(0)
+	If batterystatus(8) = 1 Then
+		bv1.Charging = True
+	Else
+		bv1.Charging = False
+	End If
+End Sub
+
+Sub FindViewByTag(Parent As Panel, Name As String) As View
+	For Each v As View In Parent.GetAllViewsRecursive
+		If Name = v.Tag Then Return v
+	Next
+	Log("View not found: " & Name)
+	Return Null
+End Sub
